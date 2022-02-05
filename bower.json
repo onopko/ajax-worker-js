@@ -1,6 +1,6 @@
 {
-	"name": "ajaxWorker",
-	"version": "1.0.0",
+	"name": "ajax-worker",
+	"version": "1.0.1",
 	"description": "ajaxWorker provides the function to use Web Workers to perform asynchronous communication via XMLHttpRequest in a sub-thread.",
 	"homepage": "https://github.com/onopko/ajaxWorker",
 	"authors": [
