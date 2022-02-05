@@ -195,7 +195,7 @@
 			elementType: 'inline',
 			data: null,
 			timeout: 2000,
-			cache: true,
+			cache: false,
 			headers: null
 		}
 

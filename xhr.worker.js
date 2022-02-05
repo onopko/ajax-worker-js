@@ -69,6 +69,37 @@ var postText = onLoad(function (_xhr) {
 	self.postMessage([_xhr.responseText, dataType]);
 });
 
+var get_uncached_url = function (_url) {
+	var url = '';
+	var match = _url.match(/^([^?#]*)(\?[^#]*)?(#.*)?$/);
+
+	if (match) {
+		if (match[1]) {
+			url += match[1];
+
+			var timestamp = new Date();
+			timestamp = timestamp.getTime() ;
+			timestamp = Math.floor(timestamp / 1000);
+
+			if (match[2]) {
+				url += match[2] + '&timestamp=' + timestamp;
+			}
+			else {
+				url += '?timestamp=' + timestamp;
+			}
+
+			if (match[3]) {
+				url += match[3];
+			}
+		}
+	}
+	else {
+		url = _url;
+	}
+
+	return url;
+};
+
 
 /** =================================================================
  *
@@ -122,6 +153,11 @@ self.onmessage = function (_event) {
 	xhr.onerror = function () {
 		throw [xhr.status, xhr.statusText, `Fetch error`];
 	};
+
+	var url = message.url;
+	if (message.cache && message.cache === false) {
+		url = self.get_uncached_url(url);
+	}
 
 	xhr.open(message.method, message.url, true);
 	xhr.timeout = message.timeout || 2000;

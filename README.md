@@ -1,6 +1,8 @@
 # ajaxWorker
 
-Web Workerを利用し、サブスレッドで非同期通信を実行する機能を提供します。
+ajaxWorkerはWeb Workersを利用しXMLHttpRequestによる非同期通信をサブスレッドで実行する機能を提供します。
+
+ajaxWorker provides the function to use Web Workers to perform asynchronous communication via XMLHttpRequest in a sub-thread.
 
 ## ファイル構成
 
@@ -98,9 +100,9 @@ Web Workerを利用し、サブスレッドで非同期通信を実行する機�
 			<td>cache</td>
 			<td></td>
 			<td>Boolean</td>
-			<td><code>true</code></td>
-			<td>true</td>
-			<td>非同期通信のキャッシュを有効とするか</td>
+			<td><code>false</code></td>
+			<td>false</td>
+			<td><ul><li>非同期通信のキャッシュを有効とするか</li><li><code>false</code> のときURLにUNIXタイムスタンプをランダムパラメータとして追加して送信します。</li></ul></td>
 		</tr>
 		<tr>
 			<td>headers</td>
