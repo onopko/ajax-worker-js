@@ -1,0 +1,16 @@
+{
+	"name": "ajaxWorker",
+	"version": "1.0.0",
+	"description": "ajaxWorker provides the function to use Web Workers to perform asynchronous communication via XMLHttpRequest in a sub-thread.",
+	"homepage": "https://github.com/onopko/ajaxWorker",
+	"authors": [
+		"Takehiko Ono <me@onotakehiko.com>"
+	],
+	"main": "ajaxWorker.js",
+	"keywords": [
+		"javascript",
+		"web workers",
+		"ajax"
+	],
+	"license": "MIT"
+  }
