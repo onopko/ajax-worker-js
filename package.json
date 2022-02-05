@@ -1,10 +1,10 @@
 {
   "name": "ajax-worker-js",
-  "version": "1.0.3",
-  "description": "ajaxWorker provides the function to use Web Workers to perform asynchronous communication via XMLHttpRequest in a sub-thread.",
+  "version": "1.0.4",
+  "description": "ajaxWorker provides the function to use Web Worker to perform asynchronous communication via XMLHttpRequest in a sub-thread.",
   "repository": {
     "type": "git",
-    "url": "git+https://github.com/onopko/ajaxWorker.git"
+    "url": "git+https://github.com/onopko/ajax-worker-js.git"
   },
   "author": "Takehiko Ono <me@onotakehiko.com> (https://onotakehiko.com)",
   "keywords": [
@@ -14,8 +14,8 @@
   ],
   "license": "MIT",
   "bugs": {
-    "url": "https://github.com/onopko/ajaxWorker/issues"
+    "url": "https://github.com/onopko/ajax-worker-js/issues"
   },
-  "homepage": "https://github.com/onopko/ajaxWorker#readme",
-  "main": "ajaxWorker.js"
+  "homepage": "https://github.com/onopko/ajax-worker-js#readme",
+  "main": "ajax-worker.js"
 }
