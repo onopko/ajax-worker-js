@@ -6,7 +6,7 @@
  *
  * by Takehiko Ono (https://onotakehiko.com/)
  *
- * License: GPLv2 or later (http://www.gnu.org/licenses/gpl-2.0.html)
+ * License: MIT (https://choosealicense.com/licenses/mit/)
  * Forked from: https://qiita.com/cgetc/items/e8a59416ddb18236ca78
  *
  * --------------------------------------------------------------- */
