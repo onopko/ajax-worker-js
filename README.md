@@ -2,7 +2,6 @@
 
 Web Workerを利用し、サブスレッドで非同期通信を実行する機能を提供します。
 
------
 ## ファイル構成
 
 | ファイル名 | 内容 |
@@ -10,15 +9,14 @@ Web Workerを利用し、サブスレッドで非同期通信を実行する機�
 | xhr.worker.js | サブスレッド処理を記述したWorkerファイルです。 |
 | ajaxWorker.js | メインスレッド上で実行する、Worker処理の呼び出しメソッド、および定義したファイル。 |
 
------
-## ajaxWorker
+## ajaxWorker (__settings_)
 
-- メインスレッドで実行するインターフェースメソッドです。
+- メインスレッドで実行するインターフェースとなるメソッドです。
 - `テキスト`, `JSON`, `XML`, `画像`, `Data URI` の取得が可能です。
 
-### _message 引数オブジェクト
+### 引数オブジェクトのパラメータ一覧
 
-非同期通信実に必要なデータの受け渡し用オブジェクトです。
+実行に必要な引数オブジェクトに含めるパラメータと仕様の一覧です。
 
 <table>
 	<thead>
@@ -53,7 +51,7 @@ Web Workerを利用し、サブスレッドで非同期通信を実行する機�
 			<td></td>
 			<td>String</td>
 			<td><code>null</code></td>
-			<td>http://example.com</td>
+			<td>'http://example.com'</td>
 			<td>データ取得先のURL</td>
 		</tr>
 		<tr>
@@ -70,7 +68,7 @@ Web Workerを利用し、サブスレッドで非同期通信を実行する機�
 			<td>String</td>
 			<td><code>'inline'</code></td>
 			<td>'inline'</td>
-			<td>dataType が <code>'image'</code> のときのみ必要。<br><code>'inline'</code> または <code>'blob'</code> のいずれか</td>
+			<td><ul><li>dataType が <code>'image'</code> のときのみ必要。</li><li><code>'inline'</code> または <code>'blob'</code> のいずれか</li></ul></td>
 		</tr>
 		<tr>
 			<td>context</td>
@@ -121,7 +119,7 @@ Web Workerを利用し、サブスレッドで非同期通信を実行する機�
 		<tr>
 			<td></td>
 			<td>_data</td>
-			<td style="white-space: nowrap;">String, Object</td>
+			<td style="white-space: nowrap;">Object<br>String</td>
 			<td></td>
 			<td></td>
 			<td>取得したデータ</td>
@@ -175,9 +173,9 @@ Web Workerを利用し、サブスレッドで非同期通信を実行する機�
 
 -----
 
-## 実行サンプル
+# 実行サンプル
 
-### **テキスト**
+## **テキスト**
 
 テキストファイルの内容やHTMLソースなど、テキストデータの取得する場合の例。
 
@@ -192,20 +190,25 @@ ajaxWorker({
 	},
 	success: function (_data) {
 		// console.log('success', _response);
-
 	},
 	error: function (_status, _statusText, _message) {
 		// console.log('error', _status, _statusText, _message);
-
 	},
 	complete: function (_event) {
 		// console.log('complete', _event);
-
 	}
 });
 ```
 
-### **JSON**
+##### 成功時の戻り値: _テキスト_
+
+``` html
+"<!doctype html><html lang=\"ja\"><head><title>example.com</title></head><body>…"
+```
+
+-----
+
+## **JSON**
 
 APIアクセス等でJSONオブジェクトを取得する場合の例。
 
@@ -217,20 +220,24 @@ ajaxWorker({
 	dataType: 'json',
 	success: function (_data) {
 		// console.log('success', _response);
-
 	},
 	error: function (_status, _statusText, _message) {
 		// console.log('error', _status, _statusText, _message);
-
 	},
 	complete: function (_event) {
 		// console.log('complete', _event);
-
 	}
 });
 ```
+##### 成功時の戻り値: _JSONオブジェクト_
 
-### **XML**
+``` json
+{ property1: value1, property2: value2, property3: value3, … }
+```
+
+-----
+
+## **XML**
 
 APIアクセス等でXMLオブジェクトを取得する場合の例。
 
@@ -242,20 +249,25 @@ ajaxWorker({
 	dataType: 'xml',
 	success: function (_data) {
 		// console.log('success', _response);
-
 	},
 	error: function (_status, _statusText, _message) {
 		// console.log('error', _status, _statusText, _message);
-
 	},
 	complete: function (_event) {
 		// console.log('complete', _event);
-
 	}
 });
 ```
 
-### **画像**
+##### 成功時の戻り値: _DOMオブジェクト_
+
+``` dom
+▶︎ #document
+```
+
+-----
+
+## **画像**
 
 - 画像を取得する場合の例。
 - 戻り値として `inline` と `blob` の2通りの取得が可能です。
@@ -270,20 +282,17 @@ ajaxWorker({
 	dataType: 'image',
 	success: function (_data) {
 		// console.log('success', _response);
-
 	},
 	error: function (_status, _statusText, _message) {
 		// console.log('error', _status, _statusText, _message);
-
 	},
 	complete: function (_event) {
 		// console.log('complete', _event);
-
 	}
 });
 ```
 
-##### 成功時の戻り値（画像オブジェクト）
+##### 成功時の戻り値: _画像オブジェクト_
 
 ``` html
 <img src="data:image/jpeg;base64,******************************…">
@@ -300,26 +309,25 @@ ajaxWorker({
 	returnType: 'blob',
 	success: function (_data) {
 		// console.log('success', _response);
-
 	},
 	error: function (_status, _statusText, _message) {
 		// console.log('error', _status, _statusText, _message);
-
 	},
 	complete: function (_event) {
 		// console.log('complete', _event);
-
 	}
 });
 ```
 
-##### 成功時の戻り値（画像オブジェクト）
+##### 成功時の戻り値: _画像オブジェクト_
 
 ``` html
 <img src="blob:http://example.com/************************************">
 ```
 
-### **Data URI**
+-----
+
+## **Data URI**
 
 指定URLをData URIとして取得する場合。
 
@@ -331,21 +339,18 @@ ajaxWorker({
 	dataType: 'datauri',
 	success: function (_data) {
 		// console.log('success', _response);
-
 	},
 	error: function (_status, _statusText, _message) {
 		// console.log('error', _status, _statusText, _message);
-
 	},
 	complete: function (_event) {
 		// console.log('complete', _event);
-
 	}
 });
 ```
 
-##### 成功時の戻り値（画像オブジェクト）
+##### 成功時の戻り値: _Data URI_
 
 ``` text
-data:image/x-icon;base64,******************************…
+"data:image/x-icon;base64,******************************…"
 ```
