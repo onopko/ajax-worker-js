@@ -274,7 +274,7 @@ ajaxWorker({
 - 画像を取得する場合の例。
 - 戻り値として `inline` と `blob` の2通りの取得が可能です。
 
-#### インラインデータで取得
+#### Data URIによるインラインデータで取得
 
 ``` javascript
 ajaxWorker({
@@ -294,7 +294,7 @@ ajaxWorker({
 });
 ```
 
-##### 成功時の戻り値: _画像要素_
+##### 成功時の戻り値: _画像エレメント_
 
 ``` html
 <img src="data:image/jpeg;base64,******************************…">
@@ -308,7 +308,7 @@ ajaxWorker({
 	method: 'GET',
 	url: 'http://example.com/assets/images/example.jpg',
 	dataType: 'image',
-	returnType: 'blob',
+	elementType: 'blob',
 	success: function (_data) {
 		// console.log('success', _response);
 	},
@@ -321,7 +321,7 @@ ajaxWorker({
 });
 ```
 
-##### 成功時の戻り値: _画像オブジェクト_
+##### 成功時の戻り値: _画像エレメント_
 
 ``` html
 <img src="blob:http://example.com/************************************">
