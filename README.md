@@ -1,4 +1,4 @@
-# ajaxWorker
+# ajaxWorker [![npm version](https://badge.fury.io/js/ajax-worker-js.svg)](https://badge.fury.io/js/ajax-worker-js)
 
 ajaxWorkerはWeb Workersを利用しXMLHttpRequestによる非同期通信をサブスレッドで実行する機能を提供します。
 
