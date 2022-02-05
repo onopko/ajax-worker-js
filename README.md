@@ -4,12 +4,16 @@ ajaxWorkerはWeb Workersを利用しXMLHttpRequestによる非同期通信をサ
 
 ajaxWorker provides the function to use Web Workers to perform asynchronous communication via XMLHttpRequest in a sub-thread.
 
-## ファイル構成
+## インストールとファイル構成
+
+``` bash
+npm install ajax-worker-js
+```
 
 | ファイル名 | 内容 |
 | -------- | ---- |
+| ajax-worker.js | メインスレッド上で実行する、Worker処理の呼び出しメソッド、および定義したファイル。 |
 | xhr.worker.js | サブスレッド処理を記述したWorkerファイルです。 |
-| ajaxWorker.js | メインスレッド上で実行する、Worker処理の呼び出しメソッド、および定義したファイル。 |
 
 ## ajaxWorker (__settings_)
 
