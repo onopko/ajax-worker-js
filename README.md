@@ -9,11 +9,13 @@ ajaxWorker provides the function to use Web Worker to perform asynchronous commu
 ``` bash
 npm install ajax-worker-js
 ```
+``` html
+<script src="ajax-worker.js"></script>
+```
 
 | ファイル名 | 内容 |
 | -------- | ---- |
-| ajax-worker.js | メインスレッド上で実行する、Worker処理の呼び出しメソッド、および定義したファイル。 |
-| xhr.worker.js | サブスレッド処理を記述したWorkerファイルです。 |
+| ajax-worker.js | メインスレッド上で実行する、Workerの呼び出しメソッドが定義されています。<br>Workerとしてサブスレッドで行う処理もインラインで含んでいます。 |
 
 ## ajaxWorker (__settings_)
 
@@ -36,14 +38,6 @@ npm install ajax-worker-js
 		</tr>
 	</thead>
 	<tbody>
-		<tr>
-			<td>dir</td>
-			<td></td>
-			<td>String</td>
-			<td><code>'/'</code></td>
-			<td>'/'</td>
-			<td><b>xhr.worker.js</b> ファイルを設置したディレクトリへの絶対パス</td>
-		</tr>
 		<tr>
 			<td>method</td>
 			<td></td>
@@ -187,8 +181,6 @@ npm install ajax-worker-js
 
 ``` javascript
 ajaxWorker({
-	dir: '/assets/js/workers',
-	method: 'GET',
 	url: 'http://example.com',
 	dataType: 'text',
 	headers: {
@@ -220,8 +212,6 @@ APIアクセス等でJSONオブジェクトを取得する場合の例。
 
 ``` javascript
 ajaxWorker({
-	dir: '/assets/js/workers',
-	method: 'GET',
 	url: 'http://example.com/api',
 	dataType: 'json',
 	success: function (_data) {
@@ -249,8 +239,6 @@ APIアクセス等でXMLオブジェクトを取得する場合の例。
 
 ``` javascript
 ajaxWorker({
-	dir: '/assets/js/workers',
-	method: 'GET',
 	url: 'http://example.com/api',
 	dataType: 'xml',
 	success: function (_data) {
@@ -282,8 +270,6 @@ ajaxWorker({
 
 ``` javascript
 ajaxWorker({
-	dir: '/assets/js/workers',
-	method: 'GET',
 	url: 'http://example.com/assets/images/example.jpg',
 	dataType: 'image',
 	success: function (_data) {
@@ -308,8 +294,6 @@ ajaxWorker({
 
 ``` javascript
 ajaxWorker({
-	dir: '/assets/js/workers',
-	method: 'GET',
 	url: 'http://example.com/assets/images/example.jpg',
 	dataType: 'image',
 	elementType: 'blob',
@@ -339,8 +323,6 @@ ajaxWorker({
 
 ``` javascript
 ajaxWorker({
-	dir: '/assets/js/workers',
-	method: 'GET',
 	url: 'http://example.com/favicon.ico',
 	dataType: 'datauri',
 	success: function (_data) {
