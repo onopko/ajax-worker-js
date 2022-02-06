@@ -98,8 +98,8 @@ npm install ajax-worker-js
 			<td>cache</td>
 			<td></td>
 			<td>Boolean</td>
-			<td><code>false</code></td>
-			<td>false</td>
+			<td><code>true</code></td>
+			<td>true</td>
 			<td><ul><li>非同期通信のキャッシュを有効とするか</li><li><code>false</code> のときURLにUNIXタイムスタンプをランダムパラメータとして追加して送信します。</li></ul></td>
 		</tr>
 		<tr>
@@ -342,3 +342,12 @@ ajaxWorker({
 ``` text
 "data:image/x-icon;base64,******************************…"
 ```
+
+-----
+
+# Special Thanks
+
+ajaxWorker の実装にあたり、特に以下の記事に大きな参考とアイデアをいただきました。
+
+- [WebWorkerでXMLHttpRequest - Qiita](https://qiita.com/cgetc/items/e8a59416ddb18236ca78)
+- [WebWorkerのソースコードをインラインで完結させる - Qiita](https://qiita.com/dojyorin/items/8e874b81648a21c1ea1d)

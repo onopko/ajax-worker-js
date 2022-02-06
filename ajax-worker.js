@@ -29,7 +29,7 @@
 
 		constructor (_code) {
 			if (!(typeof _code === 'function' || typeof _code === 'string')) {
-				throw new Error("argument must be 'function' or 'string'");
+				throw new Error("Agument must be 'function' or 'string'.");
 			}
 
 			const code = (typeof _code === 'function') ? _code.toString().replace(/^.+?\{/s, '').replace(/\}$/s, '') : _code;
@@ -110,37 +110,6 @@
 			self.postMessage([_xhr.responseText, dataType]);
 		});
 
-		var get_uncached_url = function (_url) {
-			var url = '';
-			var match = _url.match(/^([^?#]*)(\?[^#]*)?(#.*)?$/);
-
-			if (match) {
-				if (match[1]) {
-					url += match[1];
-
-					var timestamp = new Date();
-					timestamp = timestamp.getTime() ;
-					timestamp = Math.floor(timestamp / 1000);
-
-					if (match[2]) {
-						url += match[2] + '&timestamp=' + timestamp;
-					}
-					else {
-						url += '?timestamp=' + timestamp;
-					}
-
-					if (match[3]) {
-						url += match[3];
-					}
-				}
-			}
-			else {
-				url = _url;
-			}
-
-			return url;
-		};
-
 
 		/** =================================================================
 		 * EVENTS
@@ -192,11 +161,6 @@
 			xhr.onerror = function () {
 				throw [xhr.status, xhr.statusText, `Fetch error`];
 			};
-
-			var url = message.url;
-			if (message.cache && message.cache === false) {
-				url = get_uncached_url(url);
-			}
 
 			xhr.open(message.method, message.url, true);
 			xhr.timeout = message.timeout || 2000;
@@ -382,6 +346,48 @@
 
 	/** =================================================================
 	 *
+	 * Get Uncached URL
+	 *
+	 * ------------------------------------------------------------------
+	 *
+	 * @param string _url
+	 *
+	 * --------------------------------------------------------------- */
+
+	var get_uncached_url = function (_url) {
+		var url = '';
+		var match = _url.match(/^([^?#]*)(\?[^#]*)?(#.*)?$/);
+
+		if (match) {
+			if (match[1]) {
+				url += match[1];
+
+				var timestamp = new Date();
+				timestamp = timestamp.getTime() ;
+				timestamp = Math.floor(timestamp / 1000);
+
+				if (match[2]) {
+					url += match[2] + '&timestamp=' + timestamp;
+				}
+				else {
+					url += '?timestamp=' + timestamp;
+				}
+
+				if (match[3]) {
+					url += match[3];
+				}
+			}
+		}
+		else {
+			url = _url;
+		}
+
+		return url;
+	};
+
+
+	/** =================================================================
+	 *
 	 * ajaxWorker
 	 *
 	 * ------------------------------------------------------------------
@@ -411,7 +417,7 @@
 			elementType: 'inline',
 			data: null,
 			timeout: 2000,
-			cache: false,
+			cache: true,
 			headers: null
 		}
 
@@ -430,6 +436,12 @@
 		Object.keys(options_defaults).forEach(function (_key) {
 			options[_key] = _settings[_key] || options_defaults[_key];
 		});
+
+		var url = message.url;
+		if (message.cache === false) {
+			url = get_uncached_url(url);
+		}
+		message.url = url;
 
 		var AjaxService = new ExecutorService(xhr_worker);
 		AjaxService.execute(message, options);
