@@ -8,8 +8,8 @@
  *
  * License: MIT (https://choosealicense.com/licenses/mit/)
  *
- * `Executor Service` forked from: https://qiita.com/cgetc/items/e8a59416ddb18236ca78
- * `WorkerInline` forked from: https://qiita.com/dojyorin/items/8e874b81648a21c1ea1d
+ * "Executor Service" forked from: https://qiita.com/cgetc/items/e8a59416ddb18236ca78
+ * "WorkerInline" forked from: https://qiita.com/dojyorin/items/8e874b81648a21c1ea1d
  *
  * --------------------------------------------------------------- */
 
@@ -25,15 +25,23 @@
 	 * --------------------------------------------------------------- */
 
 	class WorkerInline extends Worker {
-		context = '';
+		context;
 
-		constructor (_code) {
-			if (!(typeof _code === 'function' || typeof _code === 'string')) {
+		constructor (_source) {
+			if (!(typeof _source === 'function' || typeof _source === 'string')) {
 				throw new Error("Agument must be 'function' or 'string'.");
 			}
 
-			const code = (typeof _code === 'function') ? _code.toString().replace(/^.+?\{/s, '').replace(/\}$/s, '') : _code;
-			const ctx = URL.createObjectURL(new Blob([code]));
+			var source;
+			if (typeof _source === 'function') {
+				source = _source.toString();
+				source = source.replace(/^.+?\{/, '').replace(/}$/, '');
+			}
+			else {
+				source = _source.toString();
+			}
+
+			var ctx = URL.createObjectURL(new Blob([source]));
 
 			super(ctx);
 
@@ -63,12 +71,12 @@
 
 		var onLoad = function (_callback) {
 			return function onLoad () {
-				if (this.readyState === this.DONE) {
+				if (this.readyState === 4) {
 					if (this.status === 200) {
 						_callback.call(this, this);
 					}
 					else {
-						throw [this.status, this.statusText, `Error`];
+						throw [this.status, this.statusText, 'Error'];
 					}
 				}
 			};
@@ -83,7 +91,7 @@
 
 				var match = data.match(/(data:(.*);)(.*)/);
 				if (match) {
-					data = data.replace(match[1], `data:${_xhr.getResponseHeader('Content-Type')};`);
+					data = data.replace(match[1], 'data:' + _xhr.getResponseHeader('Content-Type') + ';');
 				}
 
 				reader = void 0;
@@ -155,21 +163,21 @@
 			}
 
 			xhr.ontimeout = function () {
-				throw [xhr.status, xhr.statusText, `Timeout error [${message.timeout}]`];
+				throw [xhr.status, xhr.statusText, 'Timeout error [' + message.timeout + ']'];
 			};
 
 			xhr.onerror = function () {
-				throw [xhr.status, xhr.statusText, `Fetch error`];
+				throw [xhr.status, xhr.statusText, 'Fetch error'];
 			};
-
-			xhr.open(message.method, message.url, true);
-			xhr.timeout = message.timeout || 2000;
 
 			if (message.headers) {
 				for (var key in message.headers) {
 					xhr.setRequestHeader(key, message.headers[key]);
 				}
 			}
+
+			xhr.open(message.method, message.url, true);
+			xhr.timeout = message.timeout || 2000;
 
 			xhr.send(message.data);
 		};
@@ -185,8 +193,8 @@
 	var ExecutorService = (function () {
 		ExecutorService.prototype.maxThreads = 5;
 
-		function ExecutorService (_code, _maxThreads) {
-			this.code = _code;
+		function ExecutorService (_source, _maxThreads) {
+			this.source = _source;
 			this.queue = [];
 			this.pool = [];
 			this.running = 0;
@@ -210,7 +218,7 @@
 
 			++this.running;
 
-			var worker = this.pool.shift() || new WorkerInline(this.code);
+			var worker = this.pool.shift() || new WorkerInline(this.source);
 			var context = _options.context || this;
 
 			var onMessage = function (_event) {
@@ -231,11 +239,11 @@
 					.then(function () {
 						_options.success.apply(context, filtered_arguments);
 
-						return onComplete(_event);
+						return onComplete();
 					});
 				}
 				else {
-					return onComplete(_event);
+					return onComplete();
 				}
 			};
 
@@ -246,7 +254,7 @@
 					_options.error.apply(context, response_array);
 				}
 
-				return onComplete(_event);
+				return onComplete();
 			};
 
 			var onComplete = function (_event) {
@@ -341,7 +349,7 @@
 			default:
 				complete([value, dataType]);
 		}
-	};
+	}
 
 
 	/** =================================================================
@@ -429,7 +437,7 @@
 
 		var message = {};
 		Object.keys(message_defaults).forEach(function (_key) {
-			message[_key] = _settings[_key] || message_defaults[_key];
+			message[_key] = (typeof _settings[_key] !== 'undefined') ? _settings[_key] : message_defaults[_key];
 		});
 
 		var options = {};
@@ -437,11 +445,22 @@
 			options[_key] = _settings[_key] || options_defaults[_key];
 		});
 
-		var url = message.url;
-		if (message.cache === false) {
-			url = get_uncached_url(url);
-		}
-		message.url = url;
+		(function () {
+			var url = message.url;
+
+			if (URL) {
+				var url_obj = new URL(url, document.baseURI);
+				url = url_obj.href;
+			}
+
+			if (message.cache === false) {
+				url = get_uncached_url(url);
+			}
+
+			console.log('url', url);
+
+			message.url = url;
+		})();
 
 		var AjaxService = new ExecutorService(xhr_worker);
 		AjaxService.execute(message, options);
