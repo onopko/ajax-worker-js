@@ -7,10 +7,13 @@ ajaxWorker provides the function to use Web Worker to perform asynchronous commu
 ## インストールとファイル構成
 
 ``` bash
-npm install ajax-worker-js
+npm i install ajax-worker-js
 ```
 ``` html
 <script src="ajax-worker.js"></script>
+
+<!-- IE利用時のみ `URL API` のPolyfillが必要です -->
+<script src="https://polyfill.io/v3/polyfill.js?features=URL"></script>
 ```
 
 | ファイル名 | 内容 |
@@ -157,16 +160,8 @@ npm install ajax-worker-js
 		<tr>
 			<td>complete</td>
 			<td></td>
-			<td colspan="3">Function (<code>_event</code>)</td>
+			<td colspan="3">Function</td>
 			<td>完了時の処理（成功・失敗に関わらず必ず実行）</td>
-		</tr>
-		<tr>
-			<td></td>
-			<td>_status</td>
-			<td>Object</td>
-			<td></td>
-			<td></td>
-			<td>非同期通信結果の戻り値オブジェクト</td>
 		</tr>
 	</tbody>
 </table>
