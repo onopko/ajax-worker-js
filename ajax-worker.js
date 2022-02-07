@@ -166,7 +166,13 @@
 			}
 
 			xhr.ontimeout = function () {
-				throw [xhr.status, xhr.statusText, `Timeout error [${message.timeout}]`];
+				if (received_message.retry === true && retry_count < 1) {
+					retry_count++;
+					request(received_message);
+				}
+				else {
+					throw [xhr.status, xhr.statusText, `Timeout error [${message.timeout}]`];
+				}
 			};
 
 			xhr.onerror = function () {
