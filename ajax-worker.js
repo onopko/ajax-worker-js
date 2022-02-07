@@ -457,8 +457,6 @@
 				url = get_uncached_url(url);
 			}
 
-			console.log('url', url);
-
 			message.url = url;
 		})();
 
