@@ -106,6 +106,14 @@ npm i install ajax-worker-js
 			<td><ul><li>非同期通信のキャッシュを有効とするか</li><li><code>false</code> のときURLにUNIXタイムスタンプをランダムパラメータとして追加して送信します。</li></ul></td>
 		</tr>
 		<tr>
+			<td>retry</td>
+			<td></td>
+			<td>Boolean</td>
+			<td><code>false</code></td>
+			<td>false</td>
+			<td><code>true</code> を設定時、XMLHttpRequestに失敗した場合に1度だけ再試行します。</td>
+		</tr>
+		<tr>
 			<td>headers</td>
 			<td></td>
 			<td>Object</td>
@@ -188,7 +196,6 @@ ajaxWorker({
 		// console.log('error', _status, _statusText, _message);
 	},
 	complete: function () {
-
 	}
 });
 ```
@@ -216,14 +223,13 @@ ajaxWorker({
 		// console.log('error', _status, _statusText, _message);
 	},
 	complete: function () {
-
 	}
 });
 ```
 ##### 成功時の戻り値: _JSONオブジェクト_
 
 ``` json
-{ property1: value1, property2: value2, property3: value3 }
+{ property1: 'value1', property2: 'value2', property3: 'value3', … }
 ```
 
 -----
@@ -243,7 +249,6 @@ ajaxWorker({
 		// console.log('error', _status, _statusText, _message);
 	},
 	complete: function () {
-
 	}
 });
 ```
@@ -274,7 +279,6 @@ ajaxWorker({
 		// console.log('error', _status, _statusText, _message);
 	},
 	complete: function () {
-
 	}
 });
 ```
@@ -299,7 +303,6 @@ ajaxWorker({
 		// console.log('error', _status, _statusText, _message);
 	},
 	complete: function () {
-
 	}
 });
 ```
@@ -327,7 +330,6 @@ ajaxWorker({
 		// console.log('error', _status, _statusText, _message);
 	},
 	complete: function () {
-
 	}
 });
 ```

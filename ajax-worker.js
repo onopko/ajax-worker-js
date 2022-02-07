@@ -35,7 +35,7 @@
 			var source;
 			if (typeof _source === 'function') {
 				source = _source.toString();
-				source = source.replace(/^.+?\{/, '').replace(/}$/, '');
+				source = source.replace(/^.+?\{/, '').replace(/\}$/, '');
 			}
 			else {
 				source = _source.toString();
@@ -62,6 +62,8 @@
 	 * --------------------------------------------------------------- */
 
 	function xhr_worker () {
+		var received_message;
+		var retry_count = 0;
 		var dataType;
 
 
@@ -71,12 +73,18 @@
 
 		var onLoad = function (_callback) {
 			return function onLoad () {
-				if (this.readyState === this.DONE) {
+				if (this.readyState === 4) {
 					if (this.status === 200) {
 						_callback.call(this, this);
 					}
 					else {
-						throw [this.status, this.statusText, `Error`];
+						if (received_message.retry === true && retry_count < 1) {
+							retry_count++;
+							request(received_message);
+						}
+						else {
+							throw [this.status, this.statusText, `Error`];
+						}
 					}
 				}
 			};
@@ -118,13 +126,8 @@
 			self.postMessage([_xhr.responseText, dataType]);
 		});
 
-
-		/** =================================================================
-		 * EVENTS
-		 * --------------------------------------------------------------- */
-
-		self.onmessage = function (_event) {
-			var message = _event.data;
+		var request = function (_message) {
+			var message = _message;
 			var xhr = new XMLHttpRequest();
 
 			if (message.dataType && message.dataType.toLowerCase()) {
@@ -180,6 +183,16 @@
 			}
 
 			xhr.send(message.data);
+		};
+
+
+		/** =================================================================
+		 * EVENT
+		 * --------------------------------------------------------------- */
+
+		self.onmessage = function (_event) {
+			received_message = _event.data;
+			request(received_message);
 		};
 	}
 
@@ -426,6 +439,7 @@
 			data: null,
 			timeout: 2000,
 			cache: true,
+			retry: false,
 			headers: null
 		}
 
