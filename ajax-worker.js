@@ -71,12 +71,12 @@
 
 		var onLoad = function (_callback) {
 			return function onLoad () {
-				if (this.readyState === 4) {
+				if (this.readyState === this.DONE) {
 					if (this.status === 200) {
 						_callback.call(this, this);
 					}
 					else {
-						throw [this.status, this.statusText, 'Error'];
+						throw [this.status, this.statusText, `Error`];
 					}
 				}
 			};
@@ -91,7 +91,7 @@
 
 				var match = data.match(/(data:(.*);)(.*)/);
 				if (match) {
-					data = data.replace(match[1], 'data:' + _xhr.getResponseHeader('Content-Type') + ';');
+					data = data.replace(match[1], `data:${_xhr.getResponseHeader('Content-Type')};`);
 				}
 
 				reader = void 0;
@@ -163,21 +163,21 @@
 			}
 
 			xhr.ontimeout = function () {
-				throw [xhr.status, xhr.statusText, 'Timeout error [' + message.timeout + ']'];
+				throw [xhr.status, xhr.statusText, `Timeout error [${message.timeout}]`];
 			};
 
 			xhr.onerror = function () {
-				throw [xhr.status, xhr.statusText, 'Fetch error'];
+				throw [xhr.status, xhr.statusText, `Fetch error`];
 			};
+
+			xhr.open(message.method, message.url, true);
+			xhr.timeout = message.timeout || 2000;
 
 			if (message.headers) {
 				for (var key in message.headers) {
 					xhr.setRequestHeader(key, message.headers[key]);
 				}
 			}
-
-			xhr.open(message.method, message.url, true);
-			xhr.timeout = message.timeout || 2000;
 
 			xhr.send(message.data);
 		};
