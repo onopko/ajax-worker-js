@@ -187,8 +187,8 @@ ajaxWorker({
 	error: function (_status, _statusText, _message) {
 		// console.log('error', _status, _statusText, _message);
 	},
-	complete: function (_event) {
-		// console.log('complete', _event);
+	complete: function () {
+
 	}
 });
 ```
@@ -215,15 +215,15 @@ ajaxWorker({
 	error: function (_status, _statusText, _message) {
 		// console.log('error', _status, _statusText, _message);
 	},
-	complete: function (_event) {
-		// console.log('complete', _event);
+	complete: function () {
+
 	}
 });
 ```
 ##### 成功時の戻り値: _JSONオブジェクト_
 
 ``` json
-{ property1: value1, property2: value2, property3: value3, … }
+{ property1: value1, property2: value2, property3: value3 }
 ```
 
 -----
@@ -242,8 +242,8 @@ ajaxWorker({
 	error: function (_status, _statusText, _message) {
 		// console.log('error', _status, _statusText, _message);
 	},
-	complete: function (_event) {
-		// console.log('complete', _event);
+	complete: function () {
+
 	}
 });
 ```
@@ -273,8 +273,8 @@ ajaxWorker({
 	error: function (_status, _statusText, _message) {
 		// console.log('error', _status, _statusText, _message);
 	},
-	complete: function (_event) {
-		// console.log('complete', _event);
+	complete: function () {
+
 	}
 });
 ```
@@ -298,8 +298,8 @@ ajaxWorker({
 	error: function (_status, _statusText, _message) {
 		// console.log('error', _status, _statusText, _message);
 	},
-	complete: function (_event) {
-		// console.log('complete', _event);
+	complete: function () {
+
 	}
 });
 ```
@@ -326,8 +326,8 @@ ajaxWorker({
 	error: function (_status, _statusText, _message) {
 		// console.log('error', _status, _statusText, _message);
 	},
-	complete: function (_event) {
-		// console.log('complete', _event);
+	complete: function () {
+
 	}
 });
 ```
