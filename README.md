@@ -189,7 +189,7 @@ ajaxWorker({
 	headers: {
 		'Accept': 'text/html, application/xhtml+xml, application/xml'
 	},
-	success: function (_data) {
+	success: function (_response) {
 		// console.log('success', _response);
 	},
 	error: function (_status, _statusText, _message) {
@@ -216,7 +216,7 @@ APIアクセス等でJSONオブジェクトを取得する場合の例。
 ajaxWorker({
 	url: 'http://example.com/api',
 	dataType: 'json',
-	success: function (_data) {
+	success: function (_response) {
 		// console.log('success', _response);
 	},
 	error: function (_status, _statusText, _message) {
@@ -242,7 +242,7 @@ APIアクセス等でXMLオブジェクトを取得する場合の例。
 ajaxWorker({
 	url: 'http://example.com/api',
 	dataType: 'xml',
-	success: function (_data) {
+	success: function (_response) {
 		// console.log('success', _response);
 	},
 	error: function (_status, _statusText, _message) {
@@ -272,7 +272,7 @@ ajaxWorker({
 ajaxWorker({
 	url: 'http://example.com/assets/images/example.jpg',
 	dataType: 'image',
-	success: function (_data) {
+	success: function (_response) {
 		// console.log('success', _response);
 	},
 	error: function (_status, _statusText, _message) {
@@ -296,7 +296,7 @@ ajaxWorker({
 	url: 'http://example.com/assets/images/example.jpg',
 	dataType: 'image',
 	elementType: 'blob',
-	success: function (_data) {
+	success: function (_response) {
 		// console.log('success', _response);
 	},
 	error: function (_status, _statusText, _message) {
@@ -323,7 +323,7 @@ ajaxWorker({
 ajaxWorker({
 	url: 'http://example.com/favicon.ico',
 	dataType: 'datauri',
-	success: function (_data) {
+	success: function (_response) {
 		// console.log('success', _response);
 	},
 	error: function (_status, _statusText, _message) {

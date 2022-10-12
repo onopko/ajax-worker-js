@@ -57,6 +57,29 @@
 
 	/** =================================================================
 	 *
+	 * Encode Data Object
+	 *
+	 * --------------------------------------------------------------- */
+
+	function encodeDataObject (_data) {
+	    var params = [];
+	    for (var name in _data) {
+	        var value = _data[name];
+	        var param = encodeURIComponent(name) + '=' + encodeURIComponent(value);
+
+	        params.push(param);
+	    }
+
+	    var result = params.join('&').replace(/%20/g, '+');
+
+	    params = void 0;
+
+	    return result;
+	}
+
+
+	/** =================================================================
+	 *
 	 * XHR Worker
 	 *
 	 * --------------------------------------------------------------- */
@@ -128,7 +151,14 @@
 
 		var request = function (_message) {
 			var message = _message;
+			var xhr_url = message.url;
+			var send_data = encodeDataObject(message.data);
 			var xhr = new XMLHttpRequest();
+
+			if (message.method === 'GET' && send_data !== '') {
+				var separator = (xhr_url.indexOf('?') !== -1) ? '&' : '?';
+				xhr_url += separator + send_data;
+			}
 
 			if (message.dataType && message.dataType.toLowerCase()) {
 				dataType = message.dataType.toLowerCase();
@@ -179,7 +209,7 @@
 				throw [xhr.status, xhr.statusText, `Fetch error`];
 			};
 
-			xhr.open(message.method, message.url, true);
+			xhr.open(message.method, xhr_url, true);
 			xhr.timeout = message.timeout || 2000;
 
 			if (message.headers) {
@@ -188,7 +218,12 @@
 				}
 			}
 
-			xhr.send(message.data);
+			if (message.method === 'POST' && send_data !== '') {
+				xhr.send(send_data);
+			}
+			else {
+				xhr.send();
+			}
 		};
 
 

@@ -1,6 +1,6 @@
 {
   "name": "ajax-worker-js",
-  "version": "1.1.5",
+  "version": "1.1.6",
   "description": "ajaxWorker provides the function to use Web Worker to perform asynchronous communication via XMLHttpRequest in a sub-thread.",
   "repository": {
     "type": "git",
