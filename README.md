@@ -61,7 +61,7 @@ npm i install ajax-worker-js
 			<td>dataType</td>
 			<td></td>
 			<td>String</td>
-			<td><code>null</code></td>
+			<td><code>'text'</code></td>
 			<td>'text'</td>
 			<td>受け取るデータの形式。<br>
 			<code>'text'</code>, <code>'json'</code>, <code>'xml'</code>, <code>'image'</code>, <code>'datauri'</code> のいずれか</td>
@@ -125,7 +125,7 @@ npm i install ajax-worker-js
 		<tr>
 			<td>success</td>
 			<td></td>
-			<td colspan="3">Function (<code>_data</code>)</td>
+			<td colspan="3">Function (<code>_response</code>)</td>
 			<td>成功時の処理</td>
 		</tr>
 		<tr>

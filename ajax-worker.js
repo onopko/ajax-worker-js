@@ -25,8 +25,6 @@
 	 * --------------------------------------------------------------- */
 
 	class WorkerInline extends Worker {
-		context;
-
 		constructor (_source) {
 			if (!(typeof _source === 'function' || typeof _source === 'string')) {
 				throw new Error("Agument must be 'function' or 'string'.");
@@ -65,6 +63,63 @@
 		var received_message;
 		var retry_count = 0;
 		var dataType;
+
+
+		/** =================================================================
+		 * UTILITIES
+		 * --------------------------------------------------------------- */
+
+		var encodeDataObject = function (_data) {
+			if (_data) {
+				var params = [];
+				for (var name in _data) {
+					var value = _data[name];
+					var param = encodeURIComponent(name) + '=' + encodeURIComponent(value);
+
+					params.push(param);
+				}
+
+				var result = params.join('&').replace(/%20/g, '+');
+
+				params = void 0;
+
+				return result;
+			}
+			else {
+				return '';
+			}
+		};
+
+		var get_uncached_url = function (_url) {
+			var url = '';
+			var match = _url.match(/^([^?#]*)(\?[^#]*)?(#.*)?$/);
+
+			if (match) {
+				if (match[1]) {
+					url += match[1];
+
+					var timestamp = new Date();
+					timestamp = timestamp.getTime() ;
+					timestamp = Math.floor(timestamp / 1000);
+
+					if (match[2]) {
+						url += match[2] + '&timestamp=' + timestamp;
+					}
+					else {
+						url += '?timestamp=' + timestamp;
+					}
+
+					if (match[3]) {
+						url += match[3];
+					}
+				}
+			}
+			else {
+				url = _url;
+			}
+
+			return url;
+		};
 
 
 		/** =================================================================
@@ -284,9 +339,7 @@
 
 			var onError = function (_event) {
 				if (_options.error) {
-					var response_array = _event.message.split(',');
-
-					_options.error.apply(context, response_array);
+					_options.error.apply(context, [null, null, _event.message]);
 				}
 
 				return onComplete();
@@ -384,75 +437,6 @@
 			default:
 				complete([value, dataType]);
 		}
-	}
-
-
-	/** =================================================================
-	 *
-	 * Encode Data Object
-	 *
-	 * ------------------------------------------------------------------
-	 *
-	 * @param object _data
-	 *
-	 * --------------------------------------------------------------- */
-
-	function encodeDataObject (_data) {
-	    var params = [];
-	    for (var name in _data) {
-	        var value = _data[name];
-	        var param = encodeURIComponent(name) + '=' + encodeURIComponent(value);
-
-	        params.push(param);
-	    }
-
-	    var result = params.join('&').replace(/%20/g, '+');
-
-	    params = void 0;
-
-	    return result;
-	}
-
-
-	/** =================================================================
-	 *
-	 * Get Uncached URL
-	 *
-	 * ------------------------------------------------------------------
-	 *
-	 * @param string _url
-	 *
-	 * --------------------------------------------------------------- */
-
-	function get_uncached_url (_url) {
-		var url = '';
-		var match = _url.match(/^([^?#]*)(\?[^#]*)?(#.*)?$/);
-
-		if (match) {
-			if (match[1]) {
-				url += match[1];
-
-				var timestamp = new Date();
-				timestamp = timestamp.getTime() ;
-				timestamp = Math.floor(timestamp / 1000);
-
-				if (match[2]) {
-					url += match[2] + '&timestamp=' + timestamp;
-				}
-				else {
-					url += '?timestamp=' + timestamp;
-				}
-
-				if (match[3]) {
-					url += match[3];
-				}
-			}
-		}
-		else {
-			url = _url;
-		}
-
-		return url;
 	}
 
 
