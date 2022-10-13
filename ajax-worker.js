@@ -57,29 +57,6 @@
 
 	/** =================================================================
 	 *
-	 * Encode Data Object
-	 *
-	 * --------------------------------------------------------------- */
-
-	function encodeDataObject (_data) {
-	    var params = [];
-	    for (var name in _data) {
-	        var value = _data[name];
-	        var param = encodeURIComponent(name) + '=' + encodeURIComponent(value);
-
-	        params.push(param);
-	    }
-
-	    var result = params.join('&').replace(/%20/g, '+');
-
-	    params = void 0;
-
-	    return result;
-	}
-
-
-	/** =================================================================
-	 *
 	 * XHR Worker
 	 *
 	 * --------------------------------------------------------------- */
@@ -151,17 +128,21 @@
 
 		var request = function (_message) {
 			var message = _message;
-			var xhr_url = message.url;
-			var send_data = encodeDataObject(message.data);
+
+			var method = message.method.toUpperCase();
+			var url = message.url;
+			var dataType = message.dataType.toLowerCase();
+			var data = encodeDataObject(message.data);
+
 			var xhr = new XMLHttpRequest();
 
-			if (message.method === 'GET' && send_data !== '') {
-				var separator = (xhr_url.indexOf('?') !== -1) ? '&' : '?';
-				xhr_url += separator + send_data;
+			if (method === 'GET' && data !== '') {
+				var separator = (url.indexOf('?') !== -1) ? '&' : '?';
+				url += separator + data;
 			}
 
-			if (message.dataType && message.dataType.toLowerCase()) {
-				dataType = message.dataType.toLowerCase();
+			if (message.cache === false) {
+				url = get_uncached_url(url);
 			}
 
 			switch (dataType) {
@@ -209,7 +190,7 @@
 				throw [xhr.status, xhr.statusText, `Fetch error`];
 			};
 
-			xhr.open(message.method, xhr_url, true);
+			xhr.open(method, url, true);
 			xhr.timeout = message.timeout || 2000;
 
 			if (message.headers) {
@@ -218,8 +199,8 @@
 				}
 			}
 
-			if (message.method === 'POST' && send_data !== '') {
-				xhr.send(send_data);
+			if (method === 'POST' && data !== '') {
+				xhr.send(data);
 			}
 			else {
 				xhr.send();
@@ -408,6 +389,33 @@
 
 	/** =================================================================
 	 *
+	 * Encode Data Object
+	 *
+	 * ------------------------------------------------------------------
+	 *
+	 * @param object _data
+	 *
+	 * --------------------------------------------------------------- */
+
+	function encodeDataObject (_data) {
+	    var params = [];
+	    for (var name in _data) {
+	        var value = _data[name];
+	        var param = encodeURIComponent(name) + '=' + encodeURIComponent(value);
+
+	        params.push(param);
+	    }
+
+	    var result = params.join('&').replace(/%20/g, '+');
+
+	    params = void 0;
+
+	    return result;
+	}
+
+
+	/** =================================================================
+	 *
 	 * Get Uncached URL
 	 *
 	 * ------------------------------------------------------------------
@@ -416,7 +424,7 @@
 	 *
 	 * --------------------------------------------------------------- */
 
-	var get_uncached_url = function (_url) {
+	function get_uncached_url (_url) {
 		var url = '';
 		var match = _url.match(/^([^?#]*)(\?[^#]*)?(#.*)?$/);
 
@@ -445,7 +453,7 @@
 		}
 
 		return url;
-	};
+	}
 
 
 	/** =================================================================
@@ -475,7 +483,7 @@
 		var message_defaults = {
 			method: 'GET',
 			url: null,
-			dataType: null,
+			dataType: 'text',
 			elementType: 'inline',
 			data: null,
 			timeout: 2000,
@@ -500,20 +508,10 @@
 			options[_key] = _settings[_key] || options_defaults[_key];
 		});
 
-		(function () {
-			var url = message.url;
-
-			if (URL) {
-				var url_obj = new URL(url, document.baseURI);
-				url = url_obj.href;
-			}
-
-			if (message.cache === false) {
-				url = get_uncached_url(url);
-			}
-
-			message.url = url;
-		})();
+		if (URL) {
+			var url_obj = new URL(message.url, document.baseURI);
+			message.url = url_obj.href;
+		}
 
 		var AjaxService = new ExecutorService(xhr_worker);
 		AjaxService.execute(message, options);

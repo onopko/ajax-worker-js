@@ -63,7 +63,8 @@ npm i install ajax-worker-js
 			<td>String</td>
 			<td><code>null</code></td>
 			<td>'text'</td>
-			<td><code>'text'</code>, <code>'json'</code>, <code>'xml'</code>, <code>'image'</code>, <code>'datauri'</code> のいずれか</td>
+			<td>受け取るデータの形式。<br>
+			<code>'text'</code>, <code>'json'</code>, <code>'xml'</code>, <code>'image'</code>, <code>'datauri'</code> のいずれか</td>
 		</tr>
 		<tr>
 			<td>elementType</td>
@@ -129,7 +130,7 @@ npm i install ajax-worker-js
 		</tr>
 		<tr>
 			<td></td>
-			<td>_data</td>
+			<td>_response</td>
 			<td style="white-space: nowrap;">Object<br>String</td>
 			<td></td>
 			<td></td>
@@ -229,7 +230,7 @@ ajaxWorker({
 ##### 成功時の戻り値: _JSONオブジェクト_
 
 ``` json
-{ property1: 'value1', property2: 'value2', property3: 'value3', … }
+{ property1: 'value1', property2: 'value2', property3: 'value3' }
 ```
 
 -----
