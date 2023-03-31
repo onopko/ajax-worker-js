@@ -13,7 +13,7 @@
  *
  * --------------------------------------------------------------- */
 
- (function (_window) {
+(function (_window) {
 
 	var window = _window;
 
@@ -129,7 +129,7 @@
 		var onLoad = function (_callback) {
 			return function onLoad () {
 				if (this.readyState === 4) {
-					if (this.status === 200) {
+					if ((this.status >= 200 && this.status < 300) || this.status === 304) {
 						_callback.call(this, this);
 					}
 					else {
@@ -159,26 +159,26 @@
 
 				reader = void 0;
 
-				self.postMessage([data, dataType]);
+				self.postMessage([data, _xhr.status]);
 			};
 
 			reader.readAsDataURL(blob);
 		});
 
 		var postBlob = onLoad(function (_xhr) {
-			self.postMessage([_xhr.response, dataType]);
+			self.postMessage([_xhr.response, _xhr.status]);
 		});
 
 		var postXML = onLoad(function (_xhr) {
-			self.postMessage([_xhr.responseText, dataType]);
+			self.postMessage([_xhr.responseText, _xhr.status]);
 		});
 
 		var postJSON = onLoad(function (_xhr) {
-			self.postMessage([JSON.parse(_xhr.responseText), dataType]);
+			self.postMessage([JSON.parse(_xhr.responseText), _xhr.status]);
 		});
 
 		var postText = onLoad(function (_xhr) {
-			self.postMessage([_xhr.responseText, dataType]);
+			self.postMessage([_xhr.responseText, _xhr.status]);
 		});
 
 		var request = function (_message) {
